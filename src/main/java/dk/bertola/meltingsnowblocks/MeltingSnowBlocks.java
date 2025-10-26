@@ -2,6 +2,7 @@ package dk.bertola.meltingsnowblocks;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.minecraft.block.Blocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,8 +17,7 @@ public class MeltingSnowBlocks implements ModInitializer {
 	@Override
 	public void onInitialize() {
         try {
-            SnowMeltManager.initialize();
-            LOGGER.info("Snow Melt Mod initialized successfully");
+            LOGGER.info("Melting Snow Blocks initialized successfully");
         } catch (Exception e) {
             LOGGER.error("Failed to initialize Snow Melt Mod", e);
             throw new RuntimeException(e);

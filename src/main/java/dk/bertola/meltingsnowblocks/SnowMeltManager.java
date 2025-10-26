@@ -13,43 +13,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SnowMeltManager {
-    private static long lastUpdateTime = 0;
-    private static int tickCounter = 0;
 
-    public static void initialize() {
-        MeltingSnowBlocks.LOGGER.info("SnowMeltManager initializing...");
-        MeltingSnowBlocks.LOGGER.info("Config: radius={}, interval={}, heatSources={}",
-                MeltingSnowBlocks.CONFIG.meltRadius,
-                MeltingSnowBlocks.CONFIG.updateInterval,
-                MeltingSnowBlocks.CONFIG.heatSources);
-
-        ServerTickEvents.END_SERVER_TICK.register(server -> {
-            tickCounter++;
-            long currentTime = server.getOverworld().getTime();
-
-            if (currentTime - lastUpdateTime >= MeltingSnowBlocks.CONFIG.updateInterval) {
-                MeltingSnowBlocks.LOGGER.debug("Tick {}: Running snow melt check", tickCounter);
-                lastUpdateTime = currentTime;
-
-                int playersProcessed = 0;
-                int snowBlocksChecked = 0;
-                int snowBlocksMelted = 0;
-
-                for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                    playersProcessed++;
-                    snowBlocksMelted += checkAndMeltSnowAroundPlayer(player);
-                }
-
-                if (playersProcessed > 0) {
-                    MeltingSnowBlocks.LOGGER.info("Tick {}: Processed {} players, melted {} snow blocks",
-                            tickCounter, playersProcessed, snowBlocksMelted);
-                }
-            }
-        });
-
-        MeltingSnowBlocks.LOGGER.info("SnowMeltManager initialized successfully");
-    }
-
+    @Deprecated
     private static int checkAndMeltSnowAroundPlayer(ServerPlayerEntity player) {
         World world = player.getWorld();
         BlockPos playerPos = player.getBlockPos();
@@ -79,7 +44,7 @@ public class SnowMeltManager {
         return snowMelted;
     }
 
-    private static boolean checkAndMeltSnow(World world, BlockPos snowPos) {
+    public static boolean checkAndMeltSnow(World world, BlockPos snowPos) {
         if (hasHeatSourceNearby(world, snowPos)) {
             MeltingSnowBlocks.LOGGER.debug("Heat source found near snow at {}", snowPos);
             meltSnowBlock(world, snowPos);
@@ -96,21 +61,19 @@ public class SnowMeltManager {
             for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {
                     BlockPos checkPos = pos.add(x, y, z);
-
-                    if (isChunkLoaded(world, checkPos)) {
-                        BlockState state = world.getBlockState(checkPos);
-                        if (isHeatSource(state)) {
-                            heatSourcesFound++;
-                            MeltingSnowBlocks.LOGGER.debug("Found heat source {} at {}",
-                                    Registries.BLOCK.getId(state.getBlock()), checkPos);
-                        }
+                    BlockState state = world.getBlockState(checkPos);
+                    if (isHeatSource(state)) {
+                        heatSourcesFound++;
+                        MeltingSnowBlocks.LOGGER.debug("Found heat source {} at {}",
+                                Registries.BLOCK.getId(state.getBlock()), checkPos);
+                        return true;
                     }
                 }
             }
         }
 
         MeltingSnowBlocks.LOGGER.debug("Found {} heat sources near {}", heatSourcesFound, pos);
-        return heatSourcesFound > 0;
+        return false; //heatSourcesFound > 0;
     }
 
     private static boolean isChunkLoaded(World world, BlockPos pos) {
@@ -143,7 +106,7 @@ public class SnowMeltManager {
         boolean isHeatSource = MeltingSnowBlocks.CONFIG.heatSources.contains(blockId);
 
         if (isHeatSource) {
-            MeltingSnowBlocks.LOGGER.debug("Block {} is a heat source", blockId);
+            MeltingSnowBlocks.LOGGER.info("Block {} is a heat source", blockId);
         }
 
         return isHeatSource;
@@ -154,10 +117,10 @@ public class SnowMeltManager {
             BlockState state = world.getBlockState(pos);
             MeltingSnowBlocks.LOGGER.info("Melting snow block at {}", pos);
             BlockState above = world.getBlockState(pos.up());
-            if(!above.isOf(Blocks.SNOW) && !above.isOf(Blocks.SNOW_BLOCK)){
+            if (!above.isOf(Blocks.SNOW) && !above.isOf(Blocks.SNOW_BLOCK)) {
                 if (state.isOf(Blocks.SNOW_BLOCK)) {
                     world.setBlockState(pos, Blocks.SNOW.getDefaultState().with(SnowBlock.LAYERS, 8));
-                    world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.2f, 1.0f);
+                    world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.05f, 1.0f);
                     MeltingSnowBlocks.LOGGER.info("Melted snow block at {}", pos);
                 } else if (state.isOf(Blocks.SNOW)) {
                     int layers = state.get(SnowBlock.LAYERS);
@@ -174,8 +137,5 @@ public class SnowMeltManager {
         } catch (Exception e) {
             MeltingSnowBlocks.LOGGER.error("Error melting snow block at {}: {}", pos, e.getMessage());
         }
-    }
-    public static int forceMeltAroundPlayer(ServerPlayerEntity player) {
-        return checkAndMeltSnowAroundPlayer(player);
     }
 }
