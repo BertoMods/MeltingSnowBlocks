@@ -50,6 +50,8 @@ public class Config {
                 }
                 config.meltRadius = loaded.meltRadius;
                 config.simpleMelting = loaded.simpleMelting;
+                config.simpleMeltingLightLevel = loaded.simpleMeltingLightLevel;
+
                 LOGGER.info("Config loaded successfully");
             } catch (Exception e) {
                 LOGGER.warn("Failed to load config, using defaults: {}", e.getMessage());
