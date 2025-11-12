@@ -1,8 +1,6 @@
 package dk.bertola.meltingsnowblocks;
 
 import net.fabricmc.api.ModInitializer;
-
-import net.minecraft.block.Blocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +10,7 @@ public class MeltingSnowBlocks implements ModInitializer {
     // It is considered best practice to use your mod id as the logger's name.
     // That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static final Config CONFIG = Config.createAndLoad();;
+    public static final Config CONFIG = Config.createAndLoad();
 
 	@Override
 	public void onInitialize() {

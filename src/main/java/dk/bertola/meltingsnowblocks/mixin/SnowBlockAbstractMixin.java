@@ -16,12 +16,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AbstractBlock.class)
 public class SnowBlockAbstractMixin {
 
-    @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "randomTick", at = @At("HEAD"))
     private void heatBasedSnowMelting(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         if (world.isClient) return;
         if (!state.isOf(Blocks.SNOW_BLOCK)) return;
-        if(SnowMeltManager.checkAndMeltSnow(world,pos)){
-            MeltingSnowBlocks.LOGGER.debug("Snow Block melt progress at {}", pos.toString());
+        if(MeltingSnowBlocks.CONFIG.simpleMelting){
+            if(MeltingSnowBlocks.CONFIG.simpleMeltingLightLevel >= world.getLightLevel(pos)){
+                SnowMeltManager.meltSnowBlock(world, pos);
+            }
+        } else {
+            if(SnowMeltManager.checkAndMeltSnow(world,pos)){
+                MeltingSnowBlocks.LOGGER.debug("Snow Block melt progress at {}", pos.toString());
+            }
         }
     }
 }

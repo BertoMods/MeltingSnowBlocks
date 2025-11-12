@@ -4,8 +4,6 @@ package dk.bertola.meltingsnowblocks;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
@@ -27,6 +25,10 @@ public class Config {
             "minecraft:lantern"
     );
     public int meltRadius = 3;
+    /// Simple melting is the basic setting of just melting snowblocks and layered snow by light level.
+    /// Default: True
+    public boolean simpleMelting = true;
+    public int simpleMeltingLightLevel = 11;
 
     public Config(File file) {
         this.file = file;
@@ -47,6 +49,7 @@ public class Config {
                     config.heatSources = loaded.heatSources;
                 }
                 config.meltRadius = loaded.meltRadius;
+                config.simpleMelting = loaded.simpleMelting;
                 LOGGER.info("Config loaded successfully");
             } catch (Exception e) {
                 LOGGER.warn("Failed to load config, using defaults: {}", e.getMessage());

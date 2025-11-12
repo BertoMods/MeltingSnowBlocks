@@ -6,7 +6,6 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import dk.bertola.meltingsnowblocks.MeltingSnowBlocks;
 import dk.bertola.meltingsnowblocks.SnowMeltManager;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowBlock;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -18,11 +17,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(SnowBlock.class)
 public abstract class SnowBlockMixin {
-    @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "randomTick", at = @At("HEAD"))
     private void heatBasedSnowMelting(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         if (world.isClient) return;
-        if(SnowMeltManager.checkAndMeltSnow(world,pos)){
-            MeltingSnowBlocks.LOGGER.debug("Snow Block melt progress at {}", pos);
+        if (MeltingSnowBlocks.CONFIG.simpleMelting) {
+            if(MeltingSnowBlocks.CONFIG.simpleMeltingLightLevel >= world.getLightLevel(pos)){
+                SnowMeltManager.meltSnowBlock(world, pos);
+            }
+        } else {
+            if (SnowMeltManager.checkAndMeltSnow(world, pos)) {
+                MeltingSnowBlocks.LOGGER.debug("Snow Block melt progress at {}", pos);
+            }
         }
     }
 
@@ -30,7 +35,7 @@ public abstract class SnowBlockMixin {
     @Definition(id = "BLOCK", field = "Lnet/minecraft/world/LightType;BLOCK:Lnet/minecraft/world/LightType;")
     @Expression("?.getLightLevel(BLOCK, ?) > 11")
     @ModifyExpressionValue(method = "randomTick", at = @At("MIXINEXTRAS:EXPRESSION"))
-    private boolean disableDefaultMeltBehavior(boolean original){
+    private boolean disableDefaultMeltBehavior(boolean original) {
         return false;
     }
 }
