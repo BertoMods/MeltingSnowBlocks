@@ -7,7 +7,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.LightType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,12 +22,10 @@ public class SnowBlockAbstractMixin {
     private void heatBasedSnowMelting(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         if (world.isClient) return;
         if (!state.isOf(Blocks.SNOW_BLOCK)) return;
-        if(MeltingSnowBlocks.CONFIG.simpleMelting){
-            if(MeltingSnowBlocks.CONFIG.simpleMeltingLightLevel >= world.getLightLevel(pos)){
-                SnowMeltManager.meltSnowBlock(world, pos);
-            }
+        if (MeltingSnowBlocks.CONFIG.simpleMelting) {
+            SnowMeltManager.simpleCheckAndMeltSnow(world, pos);
         } else {
-            if(SnowMeltManager.checkAndMeltSnow(world,pos)){
+            if (SnowMeltManager.checkAndMeltSnow(world, pos)) {
                 MeltingSnowBlocks.LOGGER.debug("Snow Block melt progress at {}", pos.toString());
             }
         }

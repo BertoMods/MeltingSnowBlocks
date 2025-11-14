@@ -4,9 +4,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowBlock;
 import net.minecraft.registry.Registries;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 
 public class SnowMeltManager {
@@ -73,6 +76,17 @@ public class SnowMeltManager {
             }
         } catch (Exception e) {
             MeltingSnowBlocks.LOGGER.error("Error melting snow block at {}: {}", pos, e.getMessage());
+        }
+    }
+
+    /// Checks every direction around the block, for use on solid blocks like snow or 8 layers as the light level for the block itself is 0.
+    public static void simpleCheckAndMeltSnow(ServerWorld world, BlockPos pos) {
+        for (Direction dir :
+                Direction.values()) {
+            if (MeltingSnowBlocks.CONFIG.simpleMeltingLightLevel <= world.getLightLevel(LightType.BLOCK, pos.offset(dir))) {
+                SnowMeltManager.meltSnowBlock(world, pos);
+                return;
+            }
         }
     }
 }
