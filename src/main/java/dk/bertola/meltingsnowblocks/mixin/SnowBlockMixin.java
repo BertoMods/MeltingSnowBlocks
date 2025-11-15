@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import dk.bertola.meltingsnowblocks.MeltingSnowBlocks;
 import dk.bertola.meltingsnowblocks.SnowMeltManager;
+import dk.bertola.meltingsnowblocks.config.ConfigManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SnowBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -21,8 +22,8 @@ public abstract class SnowBlockMixin {
     @Inject(method = "randomTick", at = @At("HEAD"))
     private void heatBasedSnowMelting(BlockState state, ServerWorld world, BlockPos pos, Random random, CallbackInfo ci) {
         if (world.isClient) return;
-        if (MeltingSnowBlocks.CONFIG.simpleMelting) {
-            if(MeltingSnowBlocks.CONFIG.simpleMeltingLightLevel <= world.getLightLevel(LightType.BLOCK, pos)){
+        if (ConfigManager.getConfig().simpleMelting) {
+            if(ConfigManager.getConfig().simpleMeltingLightLevel <= world.getLightLevel(LightType.BLOCK, pos)){
                 SnowMeltManager.meltSnowBlock(world, pos);
             } else if (state.get(SnowBlock.LAYERS) == 8){
                 SnowMeltManager.simpleCheckAndMeltSnow(world,pos);

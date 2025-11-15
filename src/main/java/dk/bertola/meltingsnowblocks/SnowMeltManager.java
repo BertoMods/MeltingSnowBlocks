@@ -1,5 +1,6 @@
 package dk.bertola.meltingsnowblocks;
 
+import dk.bertola.meltingsnowblocks.config.ConfigManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowBlock;
@@ -25,7 +26,7 @@ public class SnowMeltManager {
     }
 
     private static boolean hasHeatSourceNearby(World world, BlockPos pos) {
-        int radius = MeltingSnowBlocks.CONFIG.meltRadius;
+        int radius = ConfigManager.getConfig().meltRadius;
         //int heatSourcesFound = 0;
 
         for (int x = -radius; x <= radius; x++) {
@@ -46,13 +47,13 @@ public class SnowMeltManager {
 
 
     private static boolean isHeatSource(BlockState state) {
-        if (MeltingSnowBlocks.CONFIG.heatSources == null) {
+        if (ConfigManager.getConfig().heatSources == null) {
             MeltingSnowBlocks.LOGGER.error("heatSources IS NULL!");
             return false;
         }
         String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
 
-        return MeltingSnowBlocks.CONFIG.heatSources.contains(blockId);
+        return ConfigManager.getConfig().heatSources.contains(blockId);
     }
 
     public static void meltSnowBlock(World world, BlockPos pos) {
@@ -83,7 +84,7 @@ public class SnowMeltManager {
     public static void simpleCheckAndMeltSnow(ServerWorld world, BlockPos pos) {
         for (Direction dir :
                 Direction.values()) {
-            if (MeltingSnowBlocks.CONFIG.simpleMeltingLightLevel <= world.getLightLevel(LightType.BLOCK, pos.offset(dir))) {
+            if (ConfigManager.getConfig().simpleMeltingLightLevel <= world.getLightLevel(LightType.BLOCK, pos.offset(dir))) {
                 SnowMeltManager.meltSnowBlock(world, pos);
                 return;
             }

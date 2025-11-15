@@ -1,15 +1,16 @@
 {
 	"schemaVersion": 1,
-	"id": "melting-snow-blocks",
+	"id": "improved-snow-melting",
 	"version": "${version}",
-	"name": "Melting Snow Blocks",
+	"name": "Improved Snow Melting",
 	"description": "This is simple mod with the simple goal of making snow blocks meltable",
 	"authors": [
 		"BertoLaDK"
 	],
 	"contact": {
 		"homepage": "https://mods.bertola.dk/",
-		"sources": "https://github.com/BertoMods/MeltingSnowBlocks"
+		"sources": "https://github.com/BertoMods/MeltingSnowBlocks",
+        "issues": "https://github.com/BertoMods/MeltingSnowBlocks/issues"
 	},
 	"license": "GPLv3",
 	"icon": "assets/melting-snow-blocks/logo.png",
