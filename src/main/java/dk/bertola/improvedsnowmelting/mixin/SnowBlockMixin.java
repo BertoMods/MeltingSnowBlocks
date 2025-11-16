@@ -1,11 +1,11 @@
-package dk.bertola.meltingsnowblocks.mixin;
+package dk.bertola.improvedsnowmelting.mixin;
 
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import dk.bertola.meltingsnowblocks.MeltingSnowBlocks;
-import dk.bertola.meltingsnowblocks.SnowMeltManager;
-import dk.bertola.meltingsnowblocks.config.ConfigManager;
+import dk.bertola.improvedsnowmelting.ImprovedSnowMelting;
+import dk.bertola.improvedsnowmelting.SnowMeltManager;
+import dk.bertola.improvedsnowmelting.config.ConfigManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SnowBlock;
 import net.minecraft.server.world.ServerWorld;
@@ -30,7 +30,7 @@ public abstract class SnowBlockMixin {
             }
         } else {
             if (SnowMeltManager.checkAndMeltSnow(world, pos)) {
-                MeltingSnowBlocks.LOGGER.debug("Snow Block melt progress at {}", pos);
+                ImprovedSnowMelting.LOGGER.debug("Snow Block melt progress at {}", pos);
             }
         }
     }

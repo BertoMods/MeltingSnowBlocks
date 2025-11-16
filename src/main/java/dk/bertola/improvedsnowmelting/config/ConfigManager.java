@@ -1,4 +1,4 @@
-package dk.bertola.meltingsnowblocks.config;
+package dk.bertola.improvedsnowmelting.config;
 
 import com.google.gson.Gson;
 

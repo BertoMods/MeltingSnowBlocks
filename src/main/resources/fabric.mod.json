@@ -17,10 +17,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"dk.bertola.meltingsnowblocks.MeltingSnowBlocks"
+			"dk.bertola.improvedsnowmelting.ImprovedSnowMelting"
 		],
 		"fabric-datagen": [
-			"dk.bertola.meltingsnowblocks.MeltingSnowBlocksDataGenerator"
+          "dk.bertola.improvedsnowmelting.ImprovedSnowMeltingDataGenerator"
 		]
 	},
 	"mixins": [

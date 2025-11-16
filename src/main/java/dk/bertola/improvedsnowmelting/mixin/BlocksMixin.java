@@ -1,4 +1,4 @@
-package dk.bertola.meltingsnowblocks.mixin;
+package dk.bertola.improvedsnowmelting.mixin;
 
 
 import com.llamalad7.mixinextras.expression.Definition;

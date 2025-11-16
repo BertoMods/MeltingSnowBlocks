@@ -1,8 +1,8 @@
-package dk.bertola.meltingsnowblocks.mixin;
+package dk.bertola.improvedsnowmelting.mixin;
 
-import dk.bertola.meltingsnowblocks.MeltingSnowBlocks;
-import dk.bertola.meltingsnowblocks.SnowMeltManager;
-import dk.bertola.meltingsnowblocks.config.ConfigManager;
+import dk.bertola.improvedsnowmelting.ImprovedSnowMelting;
+import dk.bertola.improvedsnowmelting.SnowMeltManager;
+import dk.bertola.improvedsnowmelting.config.ConfigManager;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -25,7 +25,7 @@ public class SnowBlockAbstractMixin {
             SnowMeltManager.simpleCheckAndMeltSnow(world, pos);
         } else {
             if (SnowMeltManager.checkAndMeltSnow(world, pos)) {
-                MeltingSnowBlocks.LOGGER.debug("Snow Block melt progress at {}", pos.toString());
+                ImprovedSnowMelting.LOGGER.debug("Snow Block melt progress at {}", pos.toString());
             }
         }
     }

@@ -1,6 +1,6 @@
-package dk.bertola.meltingsnowblocks;
+package dk.bertola.improvedsnowmelting;
 
-import dk.bertola.meltingsnowblocks.config.ConfigManager;
+import dk.bertola.improvedsnowmelting.config.ConfigManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SnowBlock;
@@ -18,7 +18,7 @@ public class SnowMeltManager {
 
     public static boolean checkAndMeltSnow(World world, BlockPos snowPos) {
         if (hasHeatSourceNearby(world, snowPos)) {
-            MeltingSnowBlocks.LOGGER.debug("Heat source found near snow at {}", snowPos);
+            ImprovedSnowMelting.LOGGER.debug("Heat source found near snow at {}", snowPos);
             meltSnowBlock(world, snowPos);
             return true;
         }
@@ -48,7 +48,7 @@ public class SnowMeltManager {
 
     private static boolean isHeatSource(BlockState state) {
         if (ConfigManager.getConfig().heatSources == null) {
-            MeltingSnowBlocks.LOGGER.error("heatSources IS NULL!");
+            ImprovedSnowMelting.LOGGER.error("heatSources IS NULL!");
             return false;
         }
         String blockId = Registries.BLOCK.getId(state.getBlock()).toString();
@@ -76,7 +76,7 @@ public class SnowMeltManager {
                 }
             }
         } catch (Exception e) {
-            MeltingSnowBlocks.LOGGER.error("Error melting snow block at {}: {}", pos, e.getMessage());
+            ImprovedSnowMelting.LOGGER.error("Error melting snow block at {}: {}", pos, e.getMessage());
         }
     }
 

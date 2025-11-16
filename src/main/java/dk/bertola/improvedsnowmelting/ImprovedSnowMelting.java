@@ -1,12 +1,12 @@
-package dk.bertola.meltingsnowblocks;
+package dk.bertola.improvedsnowmelting;
 
-import dk.bertola.meltingsnowblocks.config.ConfigManager;
+import dk.bertola.improvedsnowmelting.config.ConfigManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MeltingSnowBlocks implements ModInitializer {
+public class ImprovedSnowMelting implements ModInitializer {
     public static final String MOD_ID = "improved-snow-melting";
     // This logger is used to write text to the console and the log file.
     // It is considered best practice to use your mod id as the logger's name.
